@@ -1,0 +1,1178 @@
+[index.html](https://github.com/user-attachments/files/26487598/index.html)
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>节日历 · 少数民族节日</title>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #FFF8F0;
+  --bg2:       #FFF0E0;
+  --bg3:       #FFEBD0;
+  --card:      #FFFFFF;
+  --text:      #3D2B1F;
+  --text2:     #8C6B55;
+  --border:    #F0DCC8;
+  --shadow:    rgba(61,43,31,0.08);
+  --radius:    16px;
+  --radius-sm: 10px;
+
+  --c-dai:     #00C9A7;
+  --c-yi:      #FF5E3A;
+  --c-miao:    #A855F7;
+  --c-zang:    #F43F8E;
+  --c-meng:    #3B82F6;
+  --c-zhuang:  #22C55E;
+  --c-chaoxian:#F59E0B;
+  --c-weiwu:   #EF4444;
+  --c-bai:     #06B6D4;
+  --c-tujia:   #EAB308;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans SC', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── 顶部 header ── */
+.header {
+  background: var(--card);
+  border-bottom: 2px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 40px; height: 40px;
+  background: #FF5E3A;
+  border-radius: 12px;
+  display: flex; align-items:center; justify-content:center;
+  font-size: 1.3rem;
+}
+
+.logo-text {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 1.4rem;
+  color: var(--text);
+  letter-spacing: 0.05em;
+}
+
+.logo-sub {
+  font-size: 0.7rem;
+  color: var(--text2);
+  letter-spacing: 0.1em;
+  display: block;
+  margin-top: -2px;
+}
+
+/* 视图切换 */
+.view-toggle {
+  display: flex;
+  background: var(--bg2);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 2px;
+}
+
+.toggle-btn {
+  padding: 6px 18px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  font-size: 0.82rem;
+  font-family: 'Noto Sans SC', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+  display: flex; align-items: center; gap: 5px;
+}
+
+.toggle-btn.active {
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+/* 年份导航 */
+.year-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-btn {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex; align-items:center; justify-content:center;
+  transition: all 0.15s;
+}
+.nav-btn:hover { background: var(--bg3); border-color: #D0B090; }
+
+.year-label {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 1.1rem;
+  color: var(--text);
+  min-width: 60px;
+  text-align: center;
+}
+
+/* ── 主内容 ── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* ── 整年视图 ── */
+.year-view {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) { .year-view { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 620px) { .year-view { grid-template-columns: repeat(2, 1fr); } }
+
+.mini-month {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px 12px;
+  box-shadow: 0 2px 12px var(--shadow);
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.mini-month::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--month-color, #FF5E3A);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.mini-month:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--shadow);
+}
+
+.mini-month-title {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mini-festival-count {
+  font-size: 0.65rem;
+  background: var(--bg2);
+  color: var(--text2);
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 500;
+}
+
+/* 小日历格 */
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+}
+
+.mini-day-label {
+  font-size: 0.55rem;
+  text-align: center;
+  color: var(--text2);
+  padding: 2px 0 3px;
+  opacity: 0.6;
+}
+
+.mini-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.62rem;
+  color: var(--text2);
+  border-radius: 6px;
+  position: relative;
+}
+
+.mini-cell.has-fest {
+  background: var(--fest-color, #FF5E3A);
+  color: white;
+  font-weight: 700;
+  border-radius: 8px;
+}
+
+.mini-cell.today-mark {
+  border: 1.5px solid var(--text);
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* 节日徽章行 */
+.mini-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 8px;
+}
+
+.mini-badge {
+  font-size: 0.58rem;
+  padding: 2px 6px;
+  border-radius: 20px;
+  color: white;
+  font-weight: 500;
+  white-space: nowrap;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── 单月视图 ── */
+.month-view { display: none; }
+.month-view.active { display: block; }
+.year-view.hidden { display: none; }
+
+.month-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.month-title-big {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 2rem;
+  color: var(--text);
+}
+
+.month-sub {
+  font-size: 0.8rem;
+  color: var(--text2);
+  margin-top: 2px;
+}
+
+.back-btn {
+  width: 38px; height: 38px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex; align-items:center; justify-content:center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.back-btn:hover { background: var(--bg3); }
+
+/* 星期标题行 */
+.weekrow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.weekrow-label {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text2);
+  padding: 4px;
+  letter-spacing: 0.05em;
+}
+
+/* 月历格 */
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.day-cell {
+  background: var(--card);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  min-height: 100px;
+  padding: 8px;
+  position: relative;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+}
+
+.day-cell.empty {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.day-cell.has-festival {
+  cursor: pointer;
+  border-color: var(--border);
+}
+
+.day-cell.has-festival:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow);
+  border-color: #D0B090;
+}
+
+.day-cell.today {
+  background: #FFF8E8;
+  border-color: #F59E0B;
+  border-width: 2px;
+}
+
+.day-num {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.day-cell.today .day-num {
+  color: #F59E0B;
+}
+
+.day-lunar {
+  font-size: 0.58rem;
+  color: var(--text2);
+  margin-top: 2px;
+  opacity: 0.7;
+}
+
+.day-badges {
+  margin-top: auto;
+  padding-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* 节日徽章 */
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.62rem;
+  line-height: 1.2;
+  padding: 3px 6px 3px 4px;
+  border-radius: 8px;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.badge:hover { opacity: 0.85; }
+
+.badge-icon {
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.badge-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── 图例 ── */
+.legend-section {
+  margin-top: 2rem;
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  padding: 1.2rem 1.5rem;
+}
+
+.legend-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text2);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.legend-clear-btn {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text2);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2px 10px;
+  cursor: pointer;
+  font-family: 'Noto Sans SC', sans-serif;
+  letter-spacing: 0.05em;
+  transition: all 0.15s;
+  opacity: 0;
+  pointer-events: none;
+}
+.legend-clear-btn.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+.legend-clear-btn:hover { background: var(--bg3); color: var(--text); }
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* filter pill */
+.filter-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--text2);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 5px 12px 5px 6px;
+  cursor: pointer;
+  transition: all 0.18s;
+  user-select: none;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 500;
+}
+.filter-pill:hover {
+  border-color: var(--pill-color);
+  color: var(--text);
+  background: var(--card);
+}
+.filter-pill.active {
+  background: var(--pill-color);
+  border-color: var(--pill-color);
+  color: white;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--pill-color) 35%, transparent);
+}
+.filter-pill.dimmed {
+  opacity: 0.35;
+}
+
+.pill-icon {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items:center; justify-content:center;
+  font-size: 0.95rem;
+  background: rgba(0,0,0,0.06);
+  flex-shrink: 0;
+  transition: background 0.18s;
+}
+.filter-pill.active .pill-icon {
+  background: rgba(255,255,255,0.2);
+}
+
+/* ── 详情弹窗 ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(61,43,31,0.5);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.detail-panel {
+  background: var(--card);
+  border-radius: 24px;
+  max-width: 440px;
+  width: 100%;
+  overflow: hidden;
+  transform: scale(0.95) translateY(12px);
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 20px 60px rgba(61,43,31,0.2);
+}
+
+.overlay.show .detail-panel {
+  transform: scale(1) translateY(0);
+}
+
+/* 详情顶部彩色区 */
+.detail-top {
+  padding: 2rem 1.8rem 1.6rem;
+  position: relative;
+  color: white;
+}
+
+.detail-top-deco {
+  position: absolute;
+  inset: 0;
+  opacity: 0.15;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='8' fill='white' fill-opacity='0.3'/%3E%3Ccircle cx='0' cy='0' r='4' fill='white' fill-opacity='0.2'/%3E%3Ccircle cx='40' cy='40' r='4' fill='white' fill-opacity='0.2'/%3E%3C/svg%3E");
+}
+
+.detail-close {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex; align-items:center; justify-content:center;
+  transition: background 0.15s;
+  z-index: 1;
+}
+.detail-close:hover { background: rgba(255,255,255,0.3); }
+
+.detail-ethnic-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.detail-ethnic-icon {
+  width: 38px; height: 38px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  display: flex; align-items:center; justify-content:center;
+  font-size: 1.4rem;
+}
+
+.detail-ethnic-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  opacity: 0.9;
+  letter-spacing: 0.05em;
+}
+
+.detail-fest-name {
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+  position: relative;
+  z-index: 1;
+  line-height: 1.2;
+}
+
+.detail-date-label {
+  font-size: 0.78rem;
+  opacity: 0.8;
+  margin-top: 4px;
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.08em;
+}
+
+/* 详情内容区 */
+.detail-body {
+  padding: 1.5rem 1.8rem;
+}
+
+.detail-desc {
+  font-size: 0.9rem;
+  line-height: 1.9;
+  color: var(--text);
+  margin-bottom: 1.2rem;
+}
+
+.detail-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.4rem;
+}
+
+.chip {
+  font-size: 0.73rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--bg2);
+  color: var(--text2);
+  font-weight: 500;
+  border: 1px solid var(--border);
+}
+
+.game-btn {
+  width: 100%;
+  padding: 0.95rem;
+  border-radius: 14px;
+  border: none;
+  font-family: 'ZCOOL KuaiLe', cursive;
+  font-size: 1.05rem;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.15s, opacity 0.15s;
+  display: flex; align-items: center; justify-content:center; gap: 8px;
+}
+.game-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.game-btn:active { transform: scale(0.98); }
+
+/* ── 月份顶色条 ── */
+.month-colors = ['#FF5E3A','#F59E0B','#22C55E','#3B82F6','#A855F7','#F43F8E',
+                  '#00C9A7','#EF4444','#06B6D4','#EAB308','#FF5E3A','#F43F8E'];
+
+@media (max-width: 600px) {
+  .day-cell { min-height: 72px; padding: 5px; }
+  .day-num { font-size: 0.8rem; }
+  .badge { font-size: 0.55rem; padding: 2px 4px 2px 3px; }
+  .badge-icon { font-size: 0.72rem; }
+  .day-lunar { display: none; }
+}
+
+/* ── 语言切换按钮 ── */
+.lang-btn {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: 'Noto Sans SC', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.lang-btn:hover { background: var(--bg3); border-color: #D0B090; }
+.lang-btn.en-active { background: var(--text); color: var(--card); border-color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">🎪</div>
+    <div>
+      <div class="logo-text" id="logo-text">节日历</div>
+      <span class="logo-sub" id="logo-sub">中国少数民族节日</span>
+    </div>
+  </div>
+
+  <div class="view-toggle">
+    <button class="toggle-btn active" id="btn-year" onclick="setView('year')">
+      🗓 整年
+    </button>
+    <button class="toggle-btn" id="btn-month" onclick="setView('month')">
+      📅 月历
+    </button>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:12px">
+    <button class="lang-btn" id="lang-btn" onclick="toggleLang()">EN</button>
+    <div class="year-nav">
+      <button class="nav-btn" onclick="changeYear(-1)">‹</button>
+      <div class="year-label" id="year-label">2025</div>
+      <button class="nav-btn" onclick="changeYear(1)">›</button>
+    </div>
+  </div>
+</header>
+
+<!-- ── 主内容 ── -->
+<div class="main">
+
+  <!-- 整年视图 -->
+  <div class="year-view" id="year-view"></div>
+
+  <!-- 单月视图 -->
+  <div class="month-view" id="month-view">
+    <div class="month-header">
+      <button class="back-btn" onclick="setView('year')" title="返回整年">←</button>
+      <div>
+        <div class="month-title-big" id="month-title-big"></div>
+        <div class="month-sub" id="month-sub"></div>
+      </div>
+      <div style="display:flex;gap:6px;margin-left:auto">
+        <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
+        <button class="nav-btn" onclick="changeMonth(1)">›</button>
+      </div>
+    </div>
+
+    <div class="weekrow">
+      <div class="weekrow-label">日</div>
+      <div class="weekrow-label">一</div>
+      <div class="weekrow-label">二</div>
+      <div class="weekrow-label">三</div>
+      <div class="weekrow-label">四</div>
+      <div class="weekrow-label">五</div>
+      <div class="weekrow-label">六</div>
+    </div>
+
+    <div class="month-grid" id="month-grid"></div>
+
+    <div class="legend-section" style="margin-top:1.5rem">
+      <div class="legend-title">
+        <span class="filter-title-span">民 族 筛 选</span>
+        <button class="legend-clear-btn" id="clear-btn-month" onclick="clearFilter()">✕ 清除筛选</button>
+      </div>
+      <div class="legend-items" id="legend-items"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 整年筛选 -->
+<div style="max-width:1100px;margin:0 auto;padding:0 1.5rem 3rem" id="year-legend-wrap">
+  <div class="legend-section">
+    <div class="legend-title">
+      <span class="filter-title-span">民 族 筛 选</span>
+      <button class="legend-clear-btn" id="clear-btn-year" onclick="clearFilter()">✕ 清除筛选</button>
+    </div>
+    <div class="legend-items" id="legend-items-year"></div>
+  </div>
+</div>
+
+<!-- ── 详情弹窗 ── -->
+<div class="overlay" id="overlay" onclick="handleOverlayClick(event)">
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-top" id="detail-top">
+      <div class="detail-top-deco"></div>
+      <button class="detail-close" onclick="closeDetail()">✕</button>
+      <div class="detail-ethnic-row">
+        <div class="detail-ethnic-icon" id="d-icon"></div>
+        <div class="detail-ethnic-name" id="d-ethnic"></div>
+      </div>
+      <div class="detail-fest-name" id="d-name"></div>
+      <div class="detail-date-label" id="d-date"></div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-desc" id="d-desc"></div>
+      <div class="detail-chips" id="d-chips"></div>
+      <button class="game-btn" id="d-game-btn" onclick="alert(t().gameAlert)">
+        <span>🎮</span><span>进入节日小游戏</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── 民族数据 ──────────────────────────────
+const ETHNIC = {
+  dai:      { name:'傣族',     nameEn:'Dai',      color:'#00C9A7', icon:'🦚' },
+  yi:       { name:'彝族',     nameEn:'Yi',       color:'#FF5E3A', icon:'🔥' },
+  miao:     { name:'苗族',     nameEn:'Miao',     color:'#A855F7', icon:'🪘' },
+  zang:     { name:'藏族',     nameEn:'Tibetan',  color:'#F43F8E', icon:'⛰️' },
+  meng:     { name:'蒙古族',   nameEn:'Mongolian',color:'#3B82F6', icon:'🐴' },
+  zhuang:   { name:'壮族',     nameEn:'Zhuang',   color:'#22C55E', icon:'🥁' },
+  chaoxian: { name:'朝鲜族',   nameEn:'Korean',   color:'#F59E0B', icon:'🎋' },
+  weiwu:    { name:'维吾尔族', nameEn:'Uyghur',   color:'#EF4444', icon:'🍎' },
+  bai:      { name:'白族',     nameEn:'Bai',      color:'#06B6D4', icon:'🎨' },
+  tujia:    { name:'土家族',   nameEn:'Tujia',    color:'#EAB308', icon:'🧶' },
+};
+
+// 月份顶色
+const MONTH_COLORS = [
+  '#FF5E3A','#F59E0B','#22C55E','#3B82F6',
+  '#A855F7','#F43F8E','#00C9A7','#EF4444',
+  '#06B6D4','#EAB308','#FF8C42','#E879A0'
+];
+
+const MONTH_NAMES_ZH = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+const MONTH_NAMES_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+// ── 节日数据（双语）─────────────────────────
+const FESTIVALS = [
+  { month:1,  day:1,  ethnic:'meng',     name:'白节',       nameEn:'Tsagaan Sar',        desc:'蒙古族最隆重的传统节日，又称"查干萨日"（白月）。亲友互赠哈达，共饮马奶酒，举行赛马与摔跤竞技，男女老少盛装出席。', descEn:'The most important Mongolian festival, also known as "White Month." Families exchange khadag scarves, share mare\'s milk wine, and celebrate with wrestling and horse racing.', facts:['内蒙古','正月初一','马奶酒','哈达','摔跤'], factsEn:['Inner Mongolia','1st Lunar Month','Mare\'s milk','Khadag','Wrestling'] },
+  { month:2,  day:5,  ethnic:'zang',     name:'藏历新年',   nameEn:'Losar',              desc:'藏族最重要的节日，家家制作"古突"（麦片粥）驱邪，寺院举行"跳神"表演，人们互道"扎西德勒"。藏文书法、唐卡展示是节日亮点。', descEn:'The most important Tibetan festival. Families prepare "Guthuk" barley porridge to ward off evil, monasteries perform sacred cham dances, and people greet each other with "Tashi Delek."', facts:['西藏·青海','藏历一月初一','酥油花','藏戏','唐卡'], factsEn:['Tibet · Qinghai','Tibetan New Year','Butter sculpture','Cham dance','Thangka'] },
+  { month:2,  day:14, ethnic:'bai',      name:'本主节',     nameEn:'Benzhu Festival',    desc:'白族各村寨祭祀"本主"保护神，伴随洞经音乐演奏与歌舞表演，展示白族扎染与刺绣工艺，热闹非凡。', descEn:'Bai villages worship their patron deity "Benzhu." The festival features Dongjing music performances, folk dances, and vibrant displays of Bai tie-dye and embroidery crafts.', facts:['云南大理','农历不定','扎染','洞经音乐'], factsEn:['Yunnan Dali','Lunar calendar','Tie-dye','Dongjing music'] },
+  { month:3,  day:3,  ethnic:'zhuang',   name:'三月三',     nameEn:'March 3rd Song Fair', desc:'壮族传统歌节，男女对唱山歌（刘三姐传说的发源地），以五色糯米饭祭祖，铜鼓声声，歌声飞扬。', descEn:'The Zhuang singing festival where young men and women exchange folk songs — birthplace of the legend of Liu Sanjie. Five-color glutinous rice is offered to ancestors as bronze drums resound.', facts:['广西','农历三月初三','铜鼓','山歌','五色饭'], factsEn:['Guangxi','3rd day, 3rd Lunar Month','Bronze drum','Folk songs','Five-color rice'] },
+  { month:3,  day:15, ethnic:'bai',      name:'三月街',     nameEn:'March Street Market', desc:'"千年赶一街，一街赶千年"——大理三月街已有千年历史，各民族商贾云集，赛马、对歌、民间工艺交相辉映。', descEn:'"A thousand-year market, a market worth a thousand years" — Dali\'s March Street fair has over 1,000 years of history, drawing merchants of all ethnicities for horse racing, singing, and handicrafts.', facts:['云南大理','农历三月十五','千年集市','赛马'], factsEn:['Yunnan Dali','15th of 3rd Lunar Month','Millennium fair','Horse racing'] },
+  { month:4,  day:13, ethnic:'dai',      name:'泼水节',     nameEn:'Water Splashing Festival', desc:'傣族新年，以清水互泼祈福驱邪，象征洗去旧年晦气迎接新生。龙舟竞渡、放高升（竹筒火箭）是节日标志，傣文古籍也在此时展示。', descEn:'The Dai New Year, where people splash water on each other to wash away misfortune and welcome new beginnings. Dragon boat races and launching bamboo rockets are iconic traditions.', facts:['云南西双版纳','傣历六月','龙舟','高升','傣文'], factsEn:['Yunnan Xishuangbanna','Dai 6th Month','Dragon boat','Bamboo rockets','Dai script'] },
+  { month:5,  day:5,  ethnic:'chaoxian', name:'端午秋千',   nameEn:'Korean Swing Festival', desc:'朝鲜族端午以秋千、跳板和摔跤（씨름）为主要活动，妇女穿彩色韩服翩翩起舞，与汉族端午习俗大相径庭。', descEn:'Korean Dragon Boat Festival features swings, seesaws, and ssireum wrestling rather than the Han tradition. Women in colorful hanbok dance gracefully throughout the day.', facts:['吉林延边','农历五月初五','秋千','跳板'], factsEn:['Jilin Yanbian','5th day, 5th Lunar Month','Swings','Seesaws'] },
+  { month:5,  day:20, ethnic:'miao',     name:'独木龙舟节', nameEn:'Miao Dragon Boat Festival', desc:'苗族独特龙舟节，以一根巨木凿成独木舟，船头雕刻龙首，沿清水江竞渡，芦笙齐鸣，万人观战。', descEn:'A uniquely Miao tradition: a single giant log carved into a dragon boat races down the Qingshui River to the sound of lusheng pipes, drawing thousands of spectators.', facts:['贵州台江','农历五月','独木龙舟','芦笙','苗语'], factsEn:['Guizhou Taijiang','5th Lunar Month','Dugout dragon boat','Lusheng pipes','Miao language'] },
+  { month:6,  day:24, ethnic:'yi',       name:'火把节',     nameEn:'Torch Festival',     desc:'彝族最盛大的节日！夜晚全村男女高举火把游行，形成壮观的火海。白天摔跤、斗牛、选美，彝文古籍在祭祀中诵读。', descEn:'The grandest Yi festival! At night, villagers march with torches creating a spectacular sea of fire. Daytime activities include wrestling, bullfighting, and beauty pageants.', facts:['四川·云南·贵州','农历六月廿四','火把','彝文','摔跤'], factsEn:['Sichuan · Yunnan · Guizhou','24th of 6th Lunar Month','Torches','Yi script','Wrestling'] },
+  { month:7,  day:1,  ethnic:'meng',     name:'那达慕',     nameEn:'Naadam',             desc:'"那达慕"蒙古语意为"游戏娱乐"，展现草原英雄气概的盛会。摔跤、赛马、射箭"男儿三技"，展示蒙古族的豪迈精神。', descEn:'"Naadam" means "games" in Mongolian — a grand celebration of steppe heroism. The "Three Games of Men" — wrestling, horse racing, and archery — showcase Mongolian spirit.', facts:['内蒙古·新疆','农历六月','摔跤','赛马','射箭'], factsEn:['Inner Mongolia · Xinjiang','6th Lunar Month','Wrestling','Horse racing','Archery'] },
+  { month:7,  day:15, ethnic:'zang',     name:'雪顿节',     nameEn:'Shoton Festival',    desc:'"雪顿"藏语意为"酸奶宴"。节日核心是展佛——巨幅唐卡悬挂于山崖上供信众朝拜，同期举行盛大藏戏演出。', descEn:'"Shoton" means "yogurt feast" in Tibetan. The highlight is the unveiling of an enormous thangka draped on a hillside for worshippers, alongside grand Tibetan opera performances.', facts:['西藏拉萨','藏历七月','藏戏','唐卡展佛','酸奶'], factsEn:['Lhasa, Tibet','Tibetan 7th Month','Tibetan opera','Giant thangka','Yogurt'] },
+  { month:8,  day:15, ethnic:'chaoxian', name:'秋夕',        nameEn:'Chuseok',            desc:'朝鲜族中秋节（추석）。祭祖扫墓，制作松饼（송편），家族团圆，妇女盛装跳"강강술래"（圆圈舞），月光下歌舞不止。', descEn:'Korean harvest festival (Chuseok). Families visit ancestral graves, make pine-leaf rice cakes (songpyeon), and women in hanbok perform the Ganggangsullae circle dance under the full moon.', facts:['吉林延边','农历八月十五','松饼','圆圈舞','韩服'], factsEn:['Jilin Yanbian','15th of 8th Lunar Month','Songpyeon','Circle dance','Hanbok'] },
+  { month:8,  day:18, ethnic:'miao',     name:'花山节',     nameEn:'Flower Hill Festival', desc:'苗族盛大节日，青年男女围绕彩旗花杆对唱情歌。银饰是苗族身份的象征——盛装苗女佩戴的银饰有时重达十几斤！', descEn:'At this grand Miao festival, young people sing courtship songs around a decorated flower pole. Silver jewelry is a Miao status symbol — a fully adorned woman may wear over 10kg of silver!', facts:['云南·贵州','农历正月','银饰','苗绣','芦笙'], factsEn:['Yunnan · Guizhou','1st Lunar Month','Silver jewelry','Miao embroidery','Lusheng'] },
+  { month:9,  day:9,  ethnic:'tujia',    name:'女儿会',     nameEn:'Girls\' Festival',   desc:'土家族古老的"情人节"，青年男女自由集会歌舞相亲，女子主动表达情意，热情奔放。土家织锦"西兰卡普"也在此时展示。', descEn:'The Tujia "Valentine\'s Day" — young people freely gather to sing and find partners, with women taking the initiative. The famous Xilankapu brocade weaving is also showcased.', facts:['湖北恩施','农历七月十二','西兰卡普','土家歌舞'], factsEn:['Hubei Enshi','12th of 7th Lunar Month','Xilankapu brocade','Tujia dance'] },
+  { month:9,  day:20, ethnic:'weiwu',    name:'古尔邦节',   nameEn:'Eid al-Adha',        desc:'维吾尔族最重要的伊斯兰传统节日，宰牲献神，大巴扎（市集）人山人海，麦西来甫歌舞通宵达旦，都塔尔琴声悠扬。', descEn:'The most important Uyghur Islamic festival. Families sacrifice livestock, the Grand Bazaar overflows with people, and meshrep music and dance celebrations last through the night.', facts:['新疆','伊斯兰历','麦西来甫','大巴扎','都塔尔'], factsEn:['Xinjiang','Islamic calendar','Meshrep dance','Grand Bazaar','Dutar instrument'] },
+  { month:10, day:10, ethnic:'yi',       name:'彝族年',     nameEn:'Yi New Year',        desc:'凉山彝族传统新年（库斯节），家家宰杀年猪，男女老少身着华美彝服，毕摩（祭司）诵读彝文经典，史诗声声传颂。', descEn:'The traditional Liangshan Yi New Year (Kushi). Families slaughter pigs, everyone dresses in ornate Yi clothing, and bimo priests recite Yi scripture and ancient epics.', facts:['四川凉山','农历十月','彝文','毕摩祭祀','彝服'], factsEn:['Liangshan, Sichuan','10th Lunar Month','Yi script','Bimo ceremony','Yi costume'] },
+  { month:10, day:25, ethnic:'zang',     name:'仙女节',     nameEn:'Fairy Festival',     desc:'藏族妇女的专属节日。女性们盛装出行，手持经幡去林园野宴歌舞欢庆，而男人则在家操持家务，角色翻转趣味横生。', descEn:'A festival exclusively for Tibetan women. Women dress in their finest, carry prayer flags to gardens for feasting and dancing — while the men stay home to do the housework!', facts:['西藏','藏历十月十五','经幡','酥油茶','翻转习俗'], factsEn:['Tibet','15th of Tibetan 10th Month','Prayer flags','Butter tea','Role reversal'] },
+  { month:11, day:12, ethnic:'dai',      name:'开门节',     nameEn:'Open Door Festival', desc:'傣族宗教节日，标志着三个月"关门节"禁忌的结束。寺院举行隆重仪式，青年男女可重新恋爱嫁娶，傣文典籍公开诵读。', descEn:'A Dai religious festival marking the end of the three-month "Closed Door" period of restrictions. Monasteries hold grand ceremonies, and young people may once again court and marry.', facts:['云南西双版纳','傣历十二月','傣文','赕佛仪式'], factsEn:['Yunnan Xishuangbanna','Dai 12th Month','Dai script','Buddhist offering'] },
+  { month:11, day:20, ethnic:'bai',      name:'冬至节',     nameEn:'Winter Solstice',    desc:'白族冬至是家族团聚祭祖的重要日子。家家制作汤圆，长辈分汤圆给小辈，白族民居里扎染布装点四方，象征圆满传承。', descEn:'Winter Solstice is an important day for Bai family reunions and ancestor worship. Families make tangyuan dumplings shared from elders to children, symbolizing wholeness and continuity.', facts:['云南大理','冬至日','扎染','白族民居','汤圆'], factsEn:['Yunnan Dali','Winter Solstice','Tie-dye','Bai architecture','Tangyuan'] },
+  { month:12, day:5,  ethnic:'miao',     name:'鼓藏节',     nameEn:'Guzang Festival',    desc:'苗族十三年一次的盛大祭祖节，以铜鼓、木鼓通神祭祖，全寨宰牛祭献，极为庄重神圣——一生中能参与一次已是幸运。', descEn:'A once-every-13-years Miao ancestral festival of extraordinary scale. Bronze and wooden drums summon the ancestors, the whole village sacrifices cattle — witnessing it once in a lifetime is a blessing.', facts:['贵州雷山','十三年一次','铜鼓','苗语','芦笙'], factsEn:['Leishan, Guizhou','Every 13 years','Bronze drum','Miao language','Lusheng'] },
+  { month:12, day:22, ethnic:'weiwu',    name:'诺鲁孜节',   nameEn:'Nowruz',             desc:'维吾尔族春分新年节，用七种食物制作"诺鲁孜饭"象征新生，走亲访友互赠美食，麦西来甫歌舞通宵庆祝自然复苏。', descEn:'The Uyghur spring equinox new year. "Nowruz porridge" made from seven ingredients symbolizes renewal. Families visit one another, and meshrep dancing celebrates nature\'s awakening all night long.', facts:['新疆','春分日','诺鲁孜饭','都塔尔','歌舞'], factsEn:['Xinjiang','Spring Equinox','Nowruz porridge','Dutar','Music & dance'] },
+  { month:6,  day:6,  ethnic:'zhuang',   name:'祭龙节',     nameEn:'Dragon Worship Festival', desc:'壮族村寨举行隆重祭龙仪式，铜鼓敲响，全村共饮，杀猪宰牛祭祀，祈祷风调雨顺五谷丰登。', descEn:'Zhuang villages hold solemn dragon worship ceremonies: bronze drums beat, the whole village feasts together, and livestock are sacrificed to pray for good harvests and favorable weather.', facts:['广西','农历三月','铜鼓','祭祀','壮锦'], factsEn:['Guangxi','3rd Lunar Month','Bronze drum','Ritual','Zhuang brocade'] },
+];
+
+const LUNAR = ['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十',
+               '十一','十二','十三','十四','十五','十六','十七','十八','十九','二十',
+               '廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
+
+// ── 语言状态 ──────────────────────────────
+let lang = 'zh'; // 'zh' | 'en'
+
+const UI = {
+  zh: {
+    logoText: '节日历', logoSub: '中国少数民族节日',
+    btnYear: '🗓 整年', btnMonth: '📅 月历',
+    backTitle: '返回整年',
+    weekdays: ['日','一','二','三','四','五','六'],
+    filterTitle: '民 族 筛 选', clearFilter: '✕ 清除筛选',
+    festCount: n => n + ' 个节日',
+    monthTitleFmt: (y, m) => y + '年 ' + ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'][m-1],
+    dateFmt: (y, f) => y + '年 ' + ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'][f.month-1] + f.day + '日 · ' + (f.facts[1] || ''),
+    gameBtn: '🎮 进入节日小游戏',
+    gameAlert: '🎮 游戏模块即将接入！',
+  },
+  en: {
+    logoText: 'Festival Cal.', logoSub: 'Chinese Ethnic Minority Festivals',
+    btnYear: '🗓 Year', btnMonth: '📅 Month',
+    backTitle: 'Back to year',
+    weekdays: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    filterTitle: 'Filter by Ethnicity', clearFilter: '✕ Clear filter',
+    festCount: n => n + (n === 1 ? ' festival' : ' festivals'),
+    monthTitleFmt: (y, m) => ['January','February','March','April','May','June','July','August','September','October','November','December'][m-1] + ' ' + y,
+    dateFmt: (y, f) => ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][f.month-1] + ' ' + f.day + ', ' + y + ' · ' + (f.factsEn ? f.factsEn[1] : f.facts[1]),
+    gameBtn: '🎮 Play the Festival Game',
+    gameAlert: '🎮 Game module coming soon!',
+  }
+};
+
+function t() { return UI[lang]; }
+function ethnicName(e) { return lang === 'en' ? e.nameEn : e.name; }
+function festName(f)   { return lang === 'en' && f.nameEn ? f.nameEn : f.name; }
+function festDesc(f)   { return lang === 'en' && f.descEn ? f.descEn : f.desc; }
+function festFacts(f)  { return lang === 'en' && f.factsEn ? f.factsEn : f.facts; }
+
+function toggleLang() {
+  lang = lang === 'zh' ? 'en' : 'zh';
+  const btn = document.getElementById('lang-btn');
+  btn.textContent = lang === 'zh' ? 'EN' : '中文';
+  btn.classList.toggle('en-active', lang === 'en');
+  applyStaticUI();
+  if (currentView === 'year') { renderYearView(); renderFilter('legend-items-year'); syncPillStates(); }
+  else { renderMonthView(); syncPillStates(); }
+}
+
+function applyStaticUI() {
+  const u = t();
+  document.getElementById('logo-text').textContent = u.logoText;
+  document.getElementById('logo-sub').textContent = u.logoSub;
+  document.getElementById('btn-year').innerHTML = u.btnYear;
+  document.getElementById('btn-month').innerHTML = u.btnMonth;
+  document.querySelectorAll('.back-btn').forEach(b => b.title = u.backTitle);
+  document.querySelectorAll('.weekrow-label').forEach((el, i) => el.textContent = u.weekdays[i]);
+  document.querySelectorAll('.filter-title-span').forEach(el => el.textContent = u.filterTitle);
+  document.querySelectorAll('.legend-clear-btn').forEach(el => el.textContent = u.clearFilter);
+}
+
+// ── 状态 ──────────────────────────────────
+const today = new Date();
+let currentYear = today.getFullYear();
+let currentMonth = today.getMonth() + 1;
+let currentView = 'year';
+let activeFilters = new Set(); // 空 = 显示全部
+
+// ── 辅助函数 ──────────────────────────────
+function getFilteredFests(month, day) {
+  return FESTIVALS.filter(f =>
+    f.month === month && f.day === day &&
+    (activeFilters.size === 0 || activeFilters.has(f.ethnic))
+  );
+}
+
+function getFilteredFestsInMonth(month) {
+  return FESTIVALS.filter(f =>
+    f.month === month &&
+    (activeFilters.size === 0 || activeFilters.has(f.ethnic))
+  );
+}
+
+function getLunar(d) { return LUNAR[(d-1) % 30]; }
+
+function updateClearBtns() {
+  const vis = activeFilters.size > 0;
+  ['clear-btn-year','clear-btn-month'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('visible', vis);
+  });
+}
+
+// ── 筛选交互 ──────────────────────────────
+function toggleFilter(key) {
+  if (activeFilters.has(key)) {
+    activeFilters.delete(key);
+  } else {
+    activeFilters.add(key);
+  }
+  updateClearBtns();
+  syncPillStates();
+  if (currentView === 'year') renderYearView();
+  else renderMonthView();
+}
+
+function clearFilter() {
+  activeFilters.clear();
+  updateClearBtns();
+  syncPillStates();
+  if (currentView === 'year') renderYearView();
+  else renderMonthView();
+}
+
+function syncPillStates() {
+  document.querySelectorAll('.filter-pill').forEach(pill => {
+    const k = pill.dataset.key;
+    const isActive = activeFilters.has(k);
+    const anyActive = activeFilters.size > 0;
+    pill.classList.toggle('active', isActive);
+    pill.classList.toggle('dimmed', anyActive && !isActive);
+  });
+}
+
+// ── 整年视图 ──────────────────────────────
+function renderYearView() {
+  const container = document.getElementById('year-view');
+  container.innerHTML = '';
+  document.getElementById('year-label').textContent = currentYear;
+
+  for (let m = 1; m <= 12; m++) {
+    const fests = getFilteredFestsInMonth(m);
+    const allFests = FESTIVALS.filter(f => f.month === m); // 原始总数用于格子着色
+    const color = MONTH_COLORS[m - 1];
+    const firstDay = new Date(currentYear, m-1, 1).getDay();
+    const daysInMonth = new Date(currentYear, m, 0).getDate();
+
+    const card = document.createElement('div');
+    card.className = 'mini-month';
+    card.style.setProperty('--month-color', color);
+
+    let miniCells = '';
+    t().weekdays.forEach(d => {
+      miniCells += `<div class="mini-day-label">${d}</div>`;
+    });
+    for (let i = 0; i < firstDay; i++) miniCells += '<div></div>';
+    for (let d = 1; d <= daysInMonth; d++) {
+      const fs = getFilteredFests(m, d);
+      const isToday = d === today.getDate() && m === today.getMonth()+1 && currentYear === today.getFullYear();
+      if (fs.length > 0) {
+        const c = ETHNIC[fs[0].ethnic]?.color || color;
+        miniCells += `<div class="mini-cell has-fest" style="background:${c}">${d}</div>`;
+      } else {
+        miniCells += `<div class="mini-cell${isToday?' today-mark':''}">${d}</div>`;
+      }
+    }
+
+    const badgeHtml = fests.slice(0, 3).map(f => {
+      const e = ETHNIC[f.ethnic];
+      return `<span class="mini-badge" style="background:${e.color}">${e.icon} ${festName(f)}</span>`;
+    }).join('') + (fests.length > 3 ? `<span class="mini-badge" style="background:#999">+${fests.length-3}</span>` : '');
+
+    card.innerHTML = `
+      <div class="mini-month-title">
+        <span>${lang === 'zh' ? MONTH_NAMES_ZH[m-1] : MONTH_NAMES_EN[m-1]}</span>
+        ${fests.length > 0 ? `<span class="mini-festival-count">${t().festCount(fests.length)}</span>` : ''}
+      </div>
+      <div class="mini-grid">${miniCells}</div>
+      ${fests.length > 0 ? `<div class="mini-badges">${badgeHtml}</div>` : ''}
+    `;
+
+    card.addEventListener('click', () => {
+      currentMonth = m;
+      setView('month');
+    });
+
+    container.appendChild(card);
+  }
+}
+
+// ── 单月视图 ──────────────────────────────
+function renderMonthView() {
+  const grid = document.getElementById('month-grid');
+  grid.innerHTML = '';
+
+  document.getElementById('month-title-big').textContent = t().monthTitleFmt(currentYear, currentMonth);
+  document.getElementById('month-sub').textContent = `${MONTH_NAMES_EN[currentMonth-1]} ${currentYear}`;
+
+  const firstDay = new Date(currentYear, currentMonth-1, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    const e = document.createElement('div');
+    e.className = 'day-cell empty';
+    grid.appendChild(e);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const fests = getFilteredFests(currentMonth, d);
+    const isToday = d === today.getDate() && currentMonth === today.getMonth()+1 && currentYear === today.getFullYear();
+
+    const cell = document.createElement('div');
+    cell.className = 'day-cell' + (fests.length > 0 ? ' has-festival' : '') + (isToday ? ' today' : '');
+
+    const badgesHtml = fests.slice(0, 2).map(f => {
+      const e = ETHNIC[f.ethnic];
+      return `<div class="badge" style="background:${e.color}" onclick="event.stopPropagation();openDetail(${JSON.stringify(f).replace(/"/g,'&quot;')})">
+        <span class="badge-icon">${e.icon}</span>
+        <span class="badge-name">${festName(f)}</span>
+      </div>`;
+    }).join('');
+
+    cell.innerHTML = `
+      <span class="day-num">${d}</span>
+      <span class="day-lunar">${getLunar(d)}</span>
+      <div class="day-badges">${badgesHtml}</div>
+    `;
+
+    if (fests.length > 0) {
+      cell.addEventListener('click', () => openDetail(fests[0]));
+    }
+
+    grid.appendChild(cell);
+  }
+
+  renderFilter('legend-items');
+}
+
+// ── 筛选器渲染 ────────────────────────────
+function renderFilter(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = Object.entries(ETHNIC).map(([k, v]) => {
+    const isActive = activeFilters.has(k);
+    const anyActive = activeFilters.size > 0;
+    return `
+      <button class="filter-pill${isActive?' active':''}${anyActive&&!isActive?' dimmed':''}"
+        data-key="${k}"
+        style="--pill-color:${v.color}"
+        onclick="toggleFilter('${k}')">
+        <span class="pill-icon">${v.icon}</span>
+        <span>${ethnicName(v)}</span>
+      </button>
+    `;
+  }).join('');
+}
+
+// ── 详情弹窗 ──────────────────────────────
+function openDetail(fest) {
+  if (typeof fest === 'string') fest = JSON.parse(fest);
+  const e = ETHNIC[fest.ethnic];
+  const top = document.getElementById('detail-top');
+  top.style.background = e.color;
+
+  document.getElementById('d-icon').textContent = e.icon;
+  document.getElementById('d-ethnic').textContent = ethnicName(e) + ' · ' + festFacts(fest)[0];
+  document.getElementById('d-name').textContent = festName(fest);
+  document.getElementById('d-date').textContent = t().dateFmt(currentYear, fest);
+  document.getElementById('d-desc').textContent = festDesc(fest);
+  document.getElementById('d-chips').innerHTML = festFacts(fest).slice(2).map(f =>
+    `<span class="chip">${f}</span>`).join('');
+  document.getElementById('d-game-btn').style.background = e.color;
+  document.getElementById('d-game-btn').innerHTML = `<span>🎮</span><span>${t().gameBtn.replace('🎮 ','')}</span>`;
+
+  document.getElementById('overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+  document.getElementById('overlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('overlay')) closeDetail();
+}
+
+// ── 视图切换 ──────────────────────────────
+function setView(v) {
+  currentView = v;
+  const yv = document.getElementById('year-view');
+  const mv = document.getElementById('month-view');
+  const yw = document.getElementById('year-legend-wrap');
+
+  document.getElementById('btn-year').classList.toggle('active', v === 'year');
+  document.getElementById('btn-month').classList.toggle('active', v === 'month');
+
+  if (v === 'year') {
+    yv.classList.remove('hidden');
+    mv.classList.remove('active');
+    yw.style.display = '';
+    renderYearView();
+    renderFilter('legend-items-year');
+    syncPillStates();
+    updateClearBtns();
+  } else {
+    yv.classList.add('hidden');
+    mv.classList.add('active');
+    yw.style.display = 'none';
+    renderMonthView();
+    syncPillStates();
+    updateClearBtns();
+  }
+}
+
+function changeYear(d) {
+  currentYear += d;
+  if (currentView === 'year') renderYearView();
+  else renderMonthView();
+}
+
+function changeMonth(d) {
+  currentMonth += d;
+  if (currentMonth < 1) { currentMonth = 12; currentYear--; }
+  if (currentMonth > 12) { currentMonth = 1; currentYear++; }
+  renderMonthView();
+  document.getElementById('year-label').textContent = currentYear;
+}
+
+// ── 初始化 ────────────────────────────────
+applyStaticUI();
+setView('year');
+</script>
+</body>
+</html>
